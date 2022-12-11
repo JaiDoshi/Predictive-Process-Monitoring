@@ -6,8 +6,6 @@ from torch.nn import Parameter
 from torch.nn.init import xavier_uniform_, zeros_
 import matplotlib.pyplot as plt
 
-maxPrefixLength = 36
-
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
 class Intracase_Process(object):
@@ -293,7 +291,7 @@ def evaluate(model, dataset, loss_func, maxPrefixLength, prefixLength = None, th
     print('Threshold:', optimal_threshold)
     return loss, AUC
 
-
+maxPrefixLength = 36
 model.load_state_dict(torch.load("2015_1.pt"))
 model = model.to(device)
 
