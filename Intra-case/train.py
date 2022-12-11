@@ -223,6 +223,7 @@ print("Number of process attributes: {}".format(train_dataset.numProcessAttribut
 print("")
 
 print("Number of trainable parameters: {}".format(sum(p.numel() for p in model.parameters() if p.requires_grad)))
+print("")
 
 optimizer = torch.optim.Adam(model.parameters(), lr=0.00001, weight_decay=1e-5)
 loss_func = torch.nn.NLLLoss()
@@ -276,8 +277,6 @@ def evaluate(model, dataset, loss_func, maxPrefixLength, prefixLength = None, th
                 if prefixLength is not None:
                     break
 
-
-    print(len(y_true), len(y_pred))
     fpr, tpr, thresholds = roc_curve(y_true, y_pred)
     AUC = auc(fpr, tpr)
 
@@ -375,8 +374,9 @@ def train_model(model, optimizer, loss_func, epochs, maxPrefixLength, weights_sa
             min_val_loss = val_loss
             torch.save(model.state_dict(), weights_save_path)
 
+maxPrefixLength = 36
 
-train_model(model, optimizer, loss_func, 200, 36, "2015_1.pt", train_dataset, val_dataset)
+train_model(model, optimizer, loss_func, 200, maxPrefixLength, "2015_1.pt", train_dataset, val_dataset)
 
 def plot_AUC(AUC_train, AUC_val):
     plt.plot(AUC_train, '-rx')

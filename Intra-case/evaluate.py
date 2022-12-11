@@ -262,8 +262,6 @@ def evaluate(model, dataset, loss_func, maxPrefixLength, prefixLength = None, th
                 if prefixLength is not None:
                     break
 
-
-    print(len(y_true), len(y_pred))
     fpr, tpr, thresholds = roc_curve(y_true, y_pred)
     AUC = auc(fpr, tpr)
 
@@ -307,14 +305,18 @@ evaluate(model,val_dataset,loss_func, maxPrefixLength)
 print("---------------------")
 print("Test set results\n")
 evaluate(model,test_dataset,loss_func, maxPrefixLength)
+print("---------------------")
 
 prefixLengths = []
 AUCs = []
 
-for i in range(1, maxPrefixLength):
+for i in range(1, maxPrefixLength+1):
+    print("---------------------")
+    print("For prefix length={}:".format(i))
     loss, AUC = evaluate(model, test_dataset, loss_func, maxPrefixLength, i)
     prefixLengths.append(i)
     AUCs.append(AUC)
+    print("---------------------")
 
 # plotting the points
 plt.plot(prefixLengths, AUCs)
